@@ -60,8 +60,7 @@ export default function CommentSection({ anuncioId, adOwnerId, adTitle, onReques
           {
             user_id: adOwnerId,
             mensaje: `Tienes una nueva consulta en "${adTitle}"`,
-            tipo: 'consulta',
-            referencia_id: anuncioId,
+            anuncio_id: anuncioId,
             leida: false
           }
         ])
@@ -99,8 +98,7 @@ export default function CommentSection({ anuncioId, adOwnerId, adTitle, onReques
           {
             user_id: originalCommenterId,
             mensaje: `El vendedor respondió a tu consulta en "${adTitle}"`,
-            tipo: 'respuesta',
-            referencia_id: anuncioId,
+            anuncio_id: anuncioId,
             leida: false
           }
         ])
