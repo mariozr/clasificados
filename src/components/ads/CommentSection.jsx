@@ -9,7 +9,7 @@ export default function CommentSection({ anuncioId, adOwnerId, adTitle, onReques
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [commentText, setCommentText] = useState('')
-  
+
   // States for replying
   const [replyingTo, setReplyingTo] = useState(null)
   const [replyText, setReplyText] = useState('')
@@ -88,8 +88,10 @@ export default function CommentSection({ anuncioId, adOwnerId, adTitle, onReques
           fecha_respuesta: new Date().toISOString()
         })
         .eq('id', commentId)
-      
-      if (replyError) throw replyError
+      if (replyError) {
+        console.error("Error detallado:", replyError);
+        throw new Error(`No se pudo guardar la respuesta. Verifica si la columna 'respuesta' existe en Supabase. Detalles: ${replyError.message}`);
+      }
 
       // 2. Send notification to the original commenter
       if (originalCommenterId && originalCommenterId !== user?.id) {
@@ -103,7 +105,7 @@ export default function CommentSection({ anuncioId, adOwnerId, adTitle, onReques
           }
         ])
       }
-      
+
       setReplyText('')
       setReplyingTo(null)
       await loadComments()
@@ -142,10 +144,10 @@ export default function CommentSection({ anuncioId, adOwnerId, adTitle, onReques
                   </span>
                 </div>
                 <p>{sanitize(c.contenido)}</p>
-                
+
                 {/* Reply button for owner */}
                 {isOwner && !c.respuesta && (
-                  <button 
+                  <button
                     className="btn-reply-trigger"
                     onClick={() => setReplyingTo(replyingTo === c.id ? null : c.id)}
                   >
@@ -181,8 +183,8 @@ export default function CommentSection({ anuncioId, adOwnerId, adTitle, onReques
                     autoFocus
                   />
                   <div className="reply-actions">
-                    <button 
-                      className="btn-cancel" 
+                    <button
+                      className="btn-cancel"
                       onClick={() => {
                         setReplyingTo(null)
                         setReplyText('')
@@ -190,7 +192,7 @@ export default function CommentSection({ anuncioId, adOwnerId, adTitle, onReques
                     >
                       Cancelar
                     </button>
-                    <button 
+                    <button
                       className="btn-reply-submit"
                       disabled={replySubmitting || !replyText.trim()}
                       onClick={() => handleReply(c.id, c.user_id)}
