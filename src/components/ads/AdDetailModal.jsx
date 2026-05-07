@@ -104,6 +104,8 @@ export default function AdDetailModal({ ad, isOpen, onClose, onRequestAuth }) {
 
             <CommentSection
               anuncioId={ad.id}
+              adOwnerId={ad.user_id}
+              adTitle={ad.titulo}
               onRequestAuth={onRequestAuth}
             />
 
