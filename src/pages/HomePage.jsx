@@ -230,6 +230,7 @@ export default function HomePage() {
         provinces={provinces}
         cities={cities}
         loadingCities={loadingCities}
+        filters={filters}
         onFilterChange={handleFilterChange}
         onProvinceChange={handleProvinceChange}
       />

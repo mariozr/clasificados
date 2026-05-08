@@ -1,25 +1,18 @@
 import { useState, useCallback, memo } from 'react'
 
-function FilterSection({ categories, provinces, cities, loadingCities, onFilterChange, onProvinceChange }) {
+function FilterSection({ categories, provinces, cities, loadingCities, filters, onFilterChange, onProvinceChange }) {
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [localFilters, setLocalFilters] = useState({
-    categoria_id: 'all',
-    provincia: 'all',
-    ubicacion: 'all',
-    sort: 'recent',
-  })
 
   const handleChange = useCallback((key, value) => {
-    const updated = { ...localFilters, [key]: value }
+    const updated = { ...filters, [key]: value }
 
     if (key === 'provincia') {
       updated.ubicacion = 'all'
       onProvinceChange(value)
     }
 
-    setLocalFilters(updated)
     onFilterChange(updated)
-  }, [localFilters, onFilterChange, onProvinceChange])
+  }, [filters, onFilterChange, onProvinceChange])
 
   return (
     <section className="filters-section" id="filtersSection">
@@ -37,7 +30,7 @@ function FilterSection({ categories, provinces, cities, loadingCities, onFilterC
           <div className="filter-group">
             <label>Categoría</label>
             <select
-              value={localFilters.categoria_id}
+              value={filters.categoria_id}
               onChange={(e) => handleChange('categoria_id', e.target.value)}
             >
               <option value="all">Todos</option>
@@ -52,7 +45,7 @@ function FilterSection({ categories, provinces, cities, loadingCities, onFilterC
           <div className="filter-group">
             <label>Provincia</label>
             <select
-              value={localFilters.provincia}
+              value={filters.provincia}
               onChange={(e) => handleChange('provincia', e.target.value)}
             >
               <option value="all">Todas</option>
@@ -67,8 +60,8 @@ function FilterSection({ categories, provinces, cities, loadingCities, onFilterC
           <div className="filter-group">
             <label>Ciudad</label>
             <select
-              value={localFilters.ubicacion}
-              disabled={localFilters.provincia === 'all' || loadingCities}
+              value={filters.ubicacion}
+              disabled={filters.provincia === 'all' || loadingCities}
               onChange={(e) => handleChange('ubicacion', e.target.value)}
             >
               <option value="all">
@@ -85,7 +78,7 @@ function FilterSection({ categories, provinces, cities, loadingCities, onFilterC
           <div className="filter-group">
             <label>Ordenar por</label>
             <select
-              value={localFilters.sort}
+              value={filters.sort}
               onChange={(e) => handleChange('sort', e.target.value)}
             >
               <option value="recent">Más recientes</option>

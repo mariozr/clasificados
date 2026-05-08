@@ -68,11 +68,7 @@ export default function AdDetailPage() {
     <div className="ad-detail-page">
       <Header />
       <div className="container" style={{ padding: '2rem 0' }}>
-        <button 
-          onClick={() => navigate(-1)} 
-          className="btn-outline" 
-          style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', width: 'fit-content' }}
-        >
+        <button onClick={() => navigate(-1)} className="btn-back">
           <i className="fas fa-arrow-left"></i> Volver
         </button>
         <div style={{ background: 'var(--surface)', borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)' }}>

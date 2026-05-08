@@ -31,9 +31,19 @@ export function useAds() {
         )
       }
 
-      const { data, error } = await query.order('fecha_publicacion', {
-        ascending: false,
-      })
+      // Sorting
+      let orderColumn = 'fecha_publicacion'
+      let ascending = false
+
+      if (filters.sort === 'price-asc') {
+        orderColumn = 'precio'
+        ascending = true
+      } else if (filters.sort === 'price-desc') {
+        orderColumn = 'precio'
+        ascending = false
+      }
+
+      const { data, error } = await query.order(orderColumn, { ascending })
 
       if (error) throw error
       setAds(data || [])
