@@ -78,8 +78,10 @@ function Header({ onSearch, onShowAuth, onShowCategories, onExplore, onShowMyAds
 
   const handleLogout = useCallback((e) => {
     e.preventDefault()
-    closeMenu()
-    signOut()
+    if (window.confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+      closeMenu()
+      signOut()
+    }
   }, [closeMenu, signOut])
 
   const handleMobileSearch = useCallback((val) => {

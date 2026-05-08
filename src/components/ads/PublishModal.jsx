@@ -87,6 +87,13 @@ export default function PublishModal({
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault()
     if (!user) return alert('Debes iniciar sesión para publicar.')
+
+    // Check for empty description
+    if (!form.description.trim()) {
+      const confirmNoDesc = window.confirm('¿Estás seguro de que quieres publicar sin una descripción? Una buena descripción ayuda a vender más rápido.')
+      if (!confirmNoDesc) return
+    }
+
     setSubmitting(true)
 
     try {
@@ -269,7 +276,6 @@ export default function PublishModal({
           <textarea
             id="description"
             rows="4"
-            required
             placeholder="Describe tu producto o servicio..."
             value={form.description}
             onChange={(e) => handleChange('description', e.target.value)}

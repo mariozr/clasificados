@@ -56,15 +56,45 @@ export function useAds() {
   }, [])
 
   const deleteAd = useCallback(async (id) => {
-    const { error } = await supabase
-      .from('anuncios')
-      .update({ activo: false })
-      .eq('id', id)
-    if (error) {
-      alert('Error al eliminar')
+    try {
+      // 1. Get ad data to find image URLs
+      const { data: ad, error: fetchError } = await supabase
+        .from('anuncios')
+        .select('imagenes')
+        .eq('id', id)
+        .single()
+
+      if (fetchError) throw fetchError
+
+      // 2. Delete images from storage if they exist
+      if (ad?.imagenes && ad.imagenes.length > 0) {
+        const paths = ad.imagenes.map(url => {
+          // Extract filename from public URL
+          // URL format: https://.../storage/v1/object/public/anuncios_images/filename
+          const parts = url.split('/')
+          return parts[parts.length - 1]
+        })
+
+        const { error: storageError } = await supabase.storage
+          .from('anuncios_images')
+          .remove(paths)
+        
+        if (storageError) console.error('Error cleaning storage:', storageError)
+      }
+
+      // 3. Mark as inactive (soft delete)
+      const { error: deleteError } = await supabase
+        .from('anuncios')
+        .update({ activo: false, imagenes: [], imagen: null })
+        .eq('id', id)
+
+      if (deleteError) throw deleteError
+      return true
+    } catch (e) {
+      console.error('Error deleting ad:', e)
+      alert('Error al eliminar la publicación')
       return false
     }
-    return true
   }, [])
 
   const compressImage = (file, maxWidth = 1200, quality = 0.8) => {

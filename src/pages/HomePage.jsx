@@ -183,9 +183,11 @@ export default function HomePage() {
 
   // Delete ad
   const handleDelete = useCallback(async (adId) => {
-    const success = await deleteAd(adId)
-    if (success) {
-      fetchAds({ ...filters, userId: user?.id })
+    if (window.confirm('¿Estás seguro de que quieres eliminar esta publicación? Esta acción también borrará las fotos permanentemente.')) {
+      const success = await deleteAd(adId)
+      if (success) {
+        fetchAds({ ...filters, userId: user?.id })
+      }
     }
   }, [deleteAd, fetchAds, filters, user?.id])
 
