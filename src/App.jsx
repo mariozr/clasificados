@@ -4,7 +4,7 @@ import AdDetailPage from './pages/AdDetailPage'
 
 export default function App() {
   return (
-    <Router basename="/clasificados">
+    <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/ad/:id" element={<AdDetailPage />} />

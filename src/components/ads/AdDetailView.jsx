@@ -47,7 +47,7 @@ export default function AdDetailView({ ad, onRequestAuth }) {
   }, [ad?.id])
 
   const handleNativeShare = useCallback(async () => {
-    const shareUrl = window.location.origin + '/clasificados/ad/' + ad.id
+    const shareUrl = window.location.origin + '/ad/' + ad.id
     const shareData = {
       title: ad.titulo,
       text: `Mira este anuncio en Clasificados Formosa: ${ad.titulo}`,
@@ -159,7 +159,7 @@ export default function AdDetailView({ ad, onRequestAuth }) {
                 </button>
               )}
               <a
-                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin + '/clasificados/ad/' + ad.id)}`}
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin + '/ad/' + ad.id)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-share btn-share--facebook"
@@ -168,7 +168,7 @@ export default function AdDetailView({ ad, onRequestAuth }) {
                 <i className="fab fa-facebook-f"></i>
               </a>
               <a
-                href={`https://api.whatsapp.com/send?text=${encodeURIComponent('Mira este anuncio en Clasificados Formosa: ' + ad.titulo + ' - ' + window.location.origin + '/clasificados/ad/' + ad.id)}`}
+                href={`https://api.whatsapp.com/send?text=${encodeURIComponent('Mira este anuncio en Clasificados Formosa: ' + ad.titulo + ' - ' + window.location.origin + '/ad/' + ad.id)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-share btn-share--whatsapp"
