@@ -449,3 +449,86 @@ body.dark-theme .card__price { color: #60a5fa; }
 body.dark-theme .badge { background: var(--primary-light); color: var(--primary); }
 body.dark-theme .comment-bubble { background: rgba(var(--primary-hsl), 0.1); }
 body.dark-theme .detail-close { background: rgba(30,41,59,0.9); color: var(--text-main); }
+
+/* Image Viewer Lightbox */
+.image-viewer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(10px);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.image-viewer-container {
+  width: 90vw;
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.image-viewer-container img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  user-select: none;
+}
+
+.image-viewer-controls {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  display: flex;
+  gap: 1rem;
+  z-index: 3001;
+}
+
+.image-viewer-controls button {
+  width: 45px;
+  height: 45px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+  transition: var(--transition);
+}
+
+.image-viewer-controls button:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  transform: scale(1.1);
+}
+
+.image-viewer-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.5rem 1.5rem;
+  border-radius: var(--radius-full);
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .image-viewer-controls { top: 1rem; right: 1rem; gap: 0.5rem; }
+  .image-viewer-controls button { width: 40px; height: 40px; font-size: 1rem; }
+}
+

@@ -1,11 +1,13 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import CommentSection from './CommentSection'
+import ImageViewer from '../ui/ImageViewer'
 import { formatPrice, formatDate } from '../../utils/formatters'
 import { sanitize } from '../../utils/sanitize'
 
 export default function AdDetailView({ ad, onRequestAuth }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [showWhatsApp, setShowWhatsApp] = useState(false)
+  const [viewerOpen, setViewerOpen] = useState(false)
   const footerSentinelRef = useRef(null)
 
   const images = useMemo(() => {
@@ -77,6 +79,8 @@ export default function AdDetailView({ ad, onRequestAuth }) {
                   src={images[currentImageIndex]}
                   alt={sanitize(ad.titulo)}
                   loading="lazy"
+                  onClick={() => setViewerOpen(true)}
+                  style={{ cursor: 'zoom-in' }}
                 />
                 {images.length > 1 && (
                   <div className="gallery-nav">
@@ -194,6 +198,12 @@ export default function AdDetailView({ ad, onRequestAuth }) {
           </div>
         </div>
       </div>
+      <ImageViewer 
+        src={images[currentImageIndex]} 
+        alt={ad.titulo} 
+        isOpen={viewerOpen} 
+        onClose={() => setViewerOpen(false)} 
+      />
     </div>
   )
 }
