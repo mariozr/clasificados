@@ -56,6 +56,24 @@ export default function AdDetailModal({ ad, isOpen, onClose, onRequestAuth }) {
     }
   }, [isOpen, ad?.id]) // Re-run if ad changes
 
+  const handleNativeShare = useCallback(async () => {
+    const shareData = {
+      title: ad.titulo,
+      text: `Mira este anuncio en Clasificados Formosa: ${ad.titulo}`,
+      url: window.location.origin + '?ad=' + ad.id,
+    }
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData)
+      } else {
+        // Fallback or just ignore if not supported (handled by CSS/Conditional rendering)
+      }
+    } catch (err) {
+      console.error('Error sharing:', err)
+    }
+  }, [ad])
+
   if (!ad) return null
 
   return (
@@ -142,6 +160,36 @@ export default function AdDetailModal({ ad, isOpen, onClose, onRequestAuth }) {
               adTitle={ad.titulo}
               onRequestAuth={onRequestAuth}
             />
+
+            <div className="detail-share">
+              <span>Compartir publicación</span>
+              <div className="share-buttons">
+                {navigator.share && (
+                  <button
+                    onClick={handleNativeShare}
+                    className="btn-share btn-share--native"
+                  >
+                    <i className="fas fa-share-nodes"></i> Compartir
+                  </button>
+                )}
+                <a
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin + '?ad=' + ad.id)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-share btn-share--facebook"
+                >
+                  <i className="fab fa-facebook-f"></i> Facebook
+                </a>
+                <a
+                  href={`https://api.whatsapp.com/send?text=${encodeURIComponent('Mira este anuncio en Clasificados Formosa: ' + ad.titulo + ' - ' + window.location.origin + '?ad=' + ad.id)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-share btn-share--whatsapp"
+                >
+                  <i className="fab fa-whatsapp"></i> WhatsApp
+                </a>
+              </div>
+            </div>
 
             {/* Sentinel for WhatsApp button visibility */}
             <div ref={footerSentinelRef} className="footer-sentinel" style={{ height: '1px', marginTop: '-1px' }} />
