@@ -60,7 +60,7 @@ export default function AdDetailModal({ ad, isOpen, onClose, onRequestAuth }) {
     const shareData = {
       title: ad.titulo,
       text: `Mira este anuncio en Clasificados Formosa: ${ad.titulo}`,
-      url: window.location.origin + '?ad=' + ad.id,
+      url: window.location.origin + window.location.pathname + '?ad=' + ad.id,
     }
 
     try {
@@ -162,7 +162,7 @@ export default function AdDetailModal({ ad, isOpen, onClose, onRequestAuth }) {
             />
 
             <div className="detail-share">
-              <span>Compartir publicación</span>
+              <span>Compartir</span>
               <div className="share-buttons">
                 {navigator.share && (
                   <button
@@ -174,7 +174,7 @@ export default function AdDetailModal({ ad, isOpen, onClose, onRequestAuth }) {
                   </button>
                 )}
                 <a
-                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin + '?ad=' + ad.id)}`}
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin + window.location.pathname + '?ad=' + ad.id)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-share btn-share--facebook"
@@ -183,7 +183,7 @@ export default function AdDetailModal({ ad, isOpen, onClose, onRequestAuth }) {
                   <i className="fab fa-facebook-f"></i>
                 </a>
                 <a
-                  href={`https://api.whatsapp.com/send?text=${encodeURIComponent('Mira este anuncio en Clasificados Formosa: ' + ad.titulo + ' - ' + window.location.origin + '?ad=' + ad.id)}`}
+                  href={`https://api.whatsapp.com/send?text=${encodeURIComponent('Mira este anuncio en Clasificados Formosa: ' + ad.titulo + ' - ' + window.location.origin + window.location.pathname + '?ad=' + ad.id)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-share btn-share--whatsapp"

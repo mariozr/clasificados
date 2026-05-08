@@ -99,6 +99,18 @@ export default function App() {
     })
   }, [filters, fetchAds, user?.id])
 
+  // Handle direct links to ads (?ad=id)
+  useEffect(() => {
+    if (ads.length > 0 && !detailAd) {
+      const params = new URLSearchParams(window.location.search)
+      const adId = params.get('ad')
+      if (adId) {
+        const ad = ads.find((a) => a.id === adId)
+        if (ad) setDetailAd(ad)
+      }
+    }
+  }, [ads, detailAd])
+
   // Search handler
   const handleSearch = useCallback((val) => {
     setFilters((prev) => ({ ...prev, search: val }))
