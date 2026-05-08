@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import Modal from '../ui/Modal'
 import CommentSection from './CommentSection'
 import { formatPrice, formatDate } from '../../utils/formatters'
@@ -6,6 +6,8 @@ import { sanitize } from '../../utils/sanitize'
 
 export default function AdDetailModal({ ad, isOpen, onClose, onRequestAuth }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [showWhatsApp, setShowWhatsApp] = useState(false)
+  const footerSentinelRef = useRef(null)
 
   const images = useMemo(() => {
     if (!ad) return []
@@ -21,6 +23,38 @@ export default function AdDetailModal({ ad, isOpen, onClose, onRequestAuth }) {
   const handleThumbClick = useCallback((index) => {
     setCurrentImageIndex(index)
   }, [])
+
+  // Reset showWhatsApp when modal opens/closes
+  useEffect(() => {
+    if (!isOpen) {
+      setShowWhatsApp(false)
+    }
+  }, [isOpen])
+
+  // Intersection Observer to show WhatsApp button at the end of the content
+  useEffect(() => {
+    if (!isOpen) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setShowWhatsApp(true)
+        }
+      },
+      { threshold: 0.1, rootMargin: '0px 0px 50px 0px' }
+    )
+
+    const currentSentinel = footerSentinelRef.current
+    if (currentSentinel) {
+      observer.observe(currentSentinel)
+    }
+
+    return () => {
+      if (currentSentinel) {
+        observer.unobserve(currentSentinel)
+      }
+    }
+  }, [isOpen, ad?.id]) // Re-run if ad changes
 
   if (!ad) return null
 
@@ -109,7 +143,10 @@ export default function AdDetailModal({ ad, isOpen, onClose, onRequestAuth }) {
               onRequestAuth={onRequestAuth}
             />
 
-            <div className="detail-footer">
+            {/* Sentinel for WhatsApp button visibility */}
+            <div ref={footerSentinelRef} className="footer-sentinel" style={{ height: '1px', marginTop: '-1px' }} />
+
+            <div className={`detail-footer ${showWhatsApp ? 'visible' : ''}`}>
               <a
                 href={`https://wa.me/${ad.contacto}?text=Hola, estoy interesado en tu anuncio: ${sanitize(ad.titulo)}`}
                 target="_blank"

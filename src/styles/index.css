@@ -294,7 +294,7 @@ h1, h2, h3, h4 { letter-spacing: -0.02em; line-height: 1.2; }
 .gallery-thumbs { display: flex; gap: 0.5rem; padding: 1rem; background: var(--surface); overflow-x: auto; }
 .thumb-item { width: 60px; height: 60px; flex-shrink: 0; border-radius: var(--radius-sm); cursor: pointer; opacity: 0.6; transition: var(--transition); border: 2px solid transparent; }
 .thumb-item.active { opacity: 1; border-color: var(--primary); }
-.detail-info { padding: 2.5rem; background: var(--surface); display: flex; flex-direction: column; gap: 1.5rem; overflow-y: auto; min-height: 0; }
+.detail-info { padding: 2.5rem; background: var(--surface); display: flex; flex-direction: column; gap: 1.5rem; overflow-y: auto; height: 100%; min-height: 0; }
 .detail-info::-webkit-scrollbar { width: 6px; }
 .detail-info::-webkit-scrollbar-track { background: transparent; }
 .detail-info::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 10px; }
@@ -314,13 +314,34 @@ h1, h2, h3, h4 { letter-spacing: -0.02em; line-height: 1.2; }
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
 
 @media (max-width: 850px) {
-    .detail-footer { position: sticky; bottom: 0; left: 0; width: 100%; padding: 0.75rem 1rem; background: var(--surface-glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid var(--border-light); margin-top: auto; z-index: 10; }
+    .detail-footer { 
+        position: sticky; 
+        bottom: 0; 
+        left: 0; 
+        width: 100%; 
+        padding: 0.75rem 1rem; 
+        background: var(--surface-glass); 
+        backdrop-filter: blur(12px); 
+        -webkit-backdrop-filter: blur(12px); 
+        border-top: 1px solid var(--border-light); 
+        margin-top: auto; 
+        z-index: 10;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+        transform: translateY(100%);
+        opacity: 0;
+        pointer-events: none;
+    }
+    .detail-footer.visible {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
     .btn-whatsapp-large { width: 100%; padding: 0.6rem 1rem; font-size: 0.85rem; border-radius: var(--radius-md); box-shadow: 0 4px 12px rgba(37,211,102,0.3); gap: 0.6rem; }
     .btn-whatsapp-large i { font-size: 1.1rem; }
     .detail-container { height: 100%; display: flex; flex-direction: column; }
     .detail-gallery { height: 350px; min-height: 350px; }
     .gallery-main { min-height: 280px; height: 280px; }
-    .detail-info { padding: 1.5rem; gap: 1rem; }
+    .detail-info { padding: 1.5rem; gap: 1rem; overflow: visible; height: auto; }
     .detail-header h2 { font-size: 1.5rem; }
     .detail-price { font-size: 1.75rem; }
     .detail-meta { flex-direction: column; gap: 0.5rem; font-size: 0.85rem; }
