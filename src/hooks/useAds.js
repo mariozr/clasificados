@@ -60,26 +60,45 @@ export function useAds() {
       // 1. Get ad data to find image URLs
       const { data: ad, error: fetchError } = await supabase
         .from('anuncios')
-        .select('imagenes')
+        .select('imagenes, imagen')
         .eq('id', id)
         .single()
 
       if (fetchError) throw fetchError
 
       // 2. Delete images from storage if they exist
+      let allImageUrls = []
       if (ad?.imagenes && ad.imagenes.length > 0) {
-        const paths = ad.imagenes.map(url => {
-          // Extract filename from public URL
-          // URL format: https://.../storage/v1/object/public/anuncios_images/filename
-          const parts = url.split('/')
-          return parts[parts.length - 1]
-        })
+        allImageUrls = [...ad.imagenes]
+      } else if (ad?.imagen) {
+        allImageUrls = [ad.imagen]
+      }
 
-        const { error: storageError } = await supabase.storage
-          .from('anuncios_images')
-          .remove(paths)
-        
-        if (storageError) console.error('Error cleaning storage:', storageError)
+      if (allImageUrls.length > 0) {
+        const paths = allImageUrls.map(url => {
+          try {
+            const urlObj = new URL(url)
+            const pathname = urlObj.pathname
+            const parts = pathname.split('/')
+            return decodeURIComponent(parts[parts.length - 1])
+          } catch (e) {
+            const parts = url.split('/')
+            const fileNameWithParams = parts[parts.length - 1]
+            return decodeURIComponent(fileNameWithParams.split('?')[0])
+          }
+        }).filter(Boolean)
+
+        if (paths.length > 0) {
+          const { error: storageError, data: storageData } = await supabase.storage
+            .from('anuncios_images')
+            .remove(paths)
+          
+          if (storageError) {
+            console.error('Error cleaning storage:', storageError)
+          } else {
+            console.log('Successfully deleted images from storage:', paths, storageData)
+          }
+        }
       }
 
       // 3. Mark as inactive (soft delete)
