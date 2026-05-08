@@ -280,7 +280,13 @@ export default function App() {
         ad={detailAd}
         isOpen={!!detailAd}
         onClose={() => setDetailAd(null)}
-        onRequestAuth={() => handleShowAuth('login')}
+        onRequestAuth={() => {
+          // On mobile, close detail modal to avoid overlapping modals
+          if (window.innerWidth <= 850) {
+            setDetailAd(null)
+          }
+          handleShowAuth('login')
+        }}
       />
     </>
   )
