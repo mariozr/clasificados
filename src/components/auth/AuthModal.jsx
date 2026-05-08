@@ -3,7 +3,7 @@ import { useAuth } from '../../context/AuthContext'
 import Modal from '../ui/Modal'
 
 export default function AuthModal({ isOpen, onClose, initialMode = 'login' }) {
-  const { signInWithPassword, signUp, signInWithGoogle } = useAuth()
+  const { signInWithPassword, signUp, signInWithGoogle, signInWithFacebook } = useAuth()
   const [mode, setMode] = useState(initialMode)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -35,6 +35,14 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }) {
       alert('Error: ' + error.message)
     }
   }, [signInWithGoogle])
+
+  const handleFacebookLogin = useCallback(async () => {
+    try {
+      await signInWithFacebook()
+    } catch (error) {
+      alert('Error: ' + error.message)
+    }
+  }, [signInWithFacebook])
 
   const toggleMode = useCallback((e) => {
     e.preventDefault()
@@ -82,13 +90,20 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }) {
           <span>O continúa con</span>
         </div>
 
-        <button type="button" className="btn-google" onClick={handleGoogleLogin}>
-          <img
-            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-            alt="Google"
-          />
-          Inicia sesión con Google
-        </button>
+        <div className="auth-social-grid">
+          <button type="button" className="btn-social btn-google" onClick={handleGoogleLogin}>
+            <img
+              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+              alt="Google"
+            />
+            Google
+          </button>
+
+          <button type="button" className="btn-social btn-facebook" onClick={handleFacebookLogin}>
+            <i className="fab fa-facebook"></i>
+            Facebook
+          </button>
+        </div>
 
         <p
           style={{
