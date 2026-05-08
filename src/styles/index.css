@@ -176,7 +176,7 @@ h1, h2, h3, h4 { letter-spacing: -0.02em; line-height: 1.2; }
     .filters-wrapper.active { display: grid; }
 }
 @media (min-width: 480px) { .filters-wrapper { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 768px) { .filters-wrapper { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 768px) { .filters-wrapper { grid-template-columns: repeat(4, 1fr); } }
 
 .filter-group { width: 100%; }
 .filter-group label { display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--text-light); margin-bottom: 0.5rem; padding-left: 0.25rem; }

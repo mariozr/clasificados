@@ -12,6 +12,11 @@ function FilterSection({ categories, provinces, cities, loadingCities, filters, 
     }
 
     onFilterChange(updated)
+    
+    // Auto-collapse on mobile
+    if (window.innerWidth <= 768) {
+      setMobileOpen(false)
+    }
   }, [filters, onFilterChange, onProvinceChange])
 
   return (
