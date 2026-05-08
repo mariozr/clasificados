@@ -1,4 +1,5 @@
 import { useState, useCallback, memo } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import ThemeToggle from '../ui/ThemeToggle'
 import SearchBar from '../ui/SearchBar'
@@ -6,6 +7,7 @@ import NotificationBell from '../notifications/NotificationBell'
 
 function Header({ onSearch, onShowAuth, onShowCategories, onExplore, onShowMyAds, onShowPublish, onOpenAd }) {
   const { user, signOut, getUserName } = useAuth()
+  const navigate = useNavigate()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
 
@@ -20,42 +22,59 @@ function Header({ onSearch, onShowAuth, onShowCategories, onExplore, onShowMyAds
   const handleExplore = useCallback((e) => {
     e.preventDefault()
     closeMenu()
-    onExplore()
-  }, [closeMenu, onExplore])
+    if (onExplore) {
+      onExplore()
+    } else {
+      navigate('/')
+    }
+  }, [closeMenu, onExplore, navigate])
 
   const handleCategories = useCallback((e) => {
     e.preventDefault()
     closeMenu()
-    onShowCategories()
-  }, [closeMenu, onShowCategories])
+    if (onShowCategories) {
+      onShowCategories()
+    } else {
+      navigate('/')
+      // We could add a timeout or a state to open categories after navigation
+    }
+  }, [closeMenu, onShowCategories, navigate])
 
   const handleMyAds = useCallback((e) => {
     e.preventDefault()
     closeMenu()
-    onShowMyAds()
-  }, [closeMenu, onShowMyAds])
+    if (onShowMyAds) {
+      onShowMyAds()
+    } else {
+      navigate('/')
+    }
+  }, [closeMenu, onShowMyAds, navigate])
 
   const handlePublish = useCallback((e) => {
     e.preventDefault()
     closeMenu()
     if (!user) {
-      onShowAuth('login')
+      onShowAuth ? onShowAuth('login') : alert('Inicia sesión para publicar')
       return
     }
-    onShowPublish()
-  }, [closeMenu, user, onShowAuth, onShowPublish])
+    if (onShowPublish) {
+      onShowPublish()
+    } else {
+      navigate('/')
+    }
+  }, [closeMenu, user, onShowAuth, onShowPublish, navigate])
 
   const handleLogin = useCallback((e) => {
     e.preventDefault()
     closeMenu()
-    onShowAuth('login')
-  }, [closeMenu, onShowAuth])
+    onShowAuth ? onShowAuth('login') : navigate('/')
+  }, [closeMenu, onShowAuth, navigate])
 
   const handleRegister = useCallback((e) => {
     e.preventDefault()
     closeMenu()
-    onShowAuth('register')
-  }, [closeMenu, onShowAuth])
+    onShowAuth ? onShowAuth('register') : navigate('/')
+  }, [closeMenu, onShowAuth, navigate])
 
   const handleLogout = useCallback((e) => {
     e.preventDefault()
@@ -65,17 +84,21 @@ function Header({ onSearch, onShowAuth, onShowCategories, onExplore, onShowMyAds
 
   const handleMobileSearch = useCallback((val) => {
     closeMenu()
-    onSearch(val)
-  }, [closeMenu, onSearch])
+    if (onSearch) {
+      onSearch(val)
+    } else {
+      navigate(`/?search=${encodeURIComponent(val)}`)
+    }
+  }, [closeMenu, onSearch, navigate])
 
   return (
     <header className="header">
       <div className="container">
         <div className="header__inner">
-          <div className="logo">
+          <Link to="/" className="logo">
             <i className="fas fa-rocket"></i>
             <span>Clasi<span className="highlight">Form</span></span>
-          </div>
+          </Link>
 
           <div className="header__actions">
             <ThemeToggle />
