@@ -168,8 +168,9 @@ export default function AdDetailModal({ ad, isOpen, onClose, onRequestAuth }) {
                   <button
                     onClick={handleNativeShare}
                     className="btn-share btn-share--native"
+                    aria-label="Compartir"
                   >
-                    <i className="fas fa-share-nodes"></i> Compartir
+                    <i className="fas fa-share-nodes"></i>
                   </button>
                 )}
                 <a
@@ -177,16 +178,18 @@ export default function AdDetailModal({ ad, isOpen, onClose, onRequestAuth }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-share btn-share--facebook"
+                  aria-label="Compartir en Facebook"
                 >
-                  <i className="fab fa-facebook-f"></i> Facebook
+                  <i className="fab fa-facebook-f"></i>
                 </a>
                 <a
                   href={`https://api.whatsapp.com/send?text=${encodeURIComponent('Mira este anuncio en Clasificados Formosa: ' + ad.titulo + ' - ' + window.location.origin + '?ad=' + ad.id)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-share btn-share--whatsapp"
+                  aria-label="Compartir en WhatsApp"
                 >
-                  <i className="fab fa-whatsapp"></i> WhatsApp
+                  <i className="fab fa-whatsapp"></i>
                 </a>
               </div>
             </div>
