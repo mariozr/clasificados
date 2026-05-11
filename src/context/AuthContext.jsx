@@ -30,8 +30,15 @@ export function AuthProvider({ children }) {
   }, [])
 
   const signUp = useCallback(async (email, password) => {
-    const { error } = await supabase.auth.signUp({ email, password })
+    const { data, error } = await supabase.auth.signUp({ 
+      email, 
+      password,
+      options: {
+        emailRedirectTo: window.location.href.split('#')[0].split('?')[0]
+      }
+    })
     if (error) throw error
+    return data
   }, [])
 
   const signInWithGoogle = useCallback(async () => {

@@ -15,10 +15,16 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }) {
     try {
       if (mode === 'login') {
         await signInWithPassword(email, password)
+        onClose()
       } else {
-        await signUp(email, password)
+        const data = await signUp(email, password)
+        if (data?.user && !data?.session) {
+          alert('Registro exitoso. Por favor, revisa tu correo electrónico para confirmar tu cuenta y poder iniciar sesión.')
+        } else {
+          alert('Registro exitoso. Ya puedes iniciar sesión.')
+        }
+        onClose()
       }
-      onClose()
       setEmail('')
       setPassword('')
     } catch (error) {
