@@ -12,7 +12,8 @@ export default function AdDetailView({ ad, onRequestAuth }) {
 
   const images = useMemo(() => {
     if (!ad) return []
-    return ad.imagenes || (ad.imagen ? [ad.imagen] : [])
+    const imgs = ad.imagenes || (ad.imagen ? [ad.imagen] : [])
+    return imgs.length > 0 ? imgs : ['/default-ad.png']
   }, [ad])
 
   const changeImage = useCallback((step) => {
@@ -73,29 +74,21 @@ export default function AdDetailView({ ad, onRequestAuth }) {
         {/* Gallery */}
         <div className="detail-gallery">
           <div className="gallery-main">
-            {images.length > 0 ? (
-              <>
-                <img
-                  src={images[currentImageIndex]}
-                  alt={sanitize(ad.titulo)}
-                  loading="lazy"
-                  onClick={() => setViewerOpen(true)}
-                  style={{ cursor: 'zoom-in' }}
-                />
-                {images.length > 1 && (
-                  <div className="gallery-nav">
-                    <button onClick={() => changeImage(-1)} aria-label="Imagen anterior">
-                      <i className="fas fa-chevron-left"></i>
-                    </button>
-                    <button onClick={() => changeImage(1)} aria-label="Siguiente imagen">
-                      <i className="fas fa-chevron-right"></i>
-                    </button>
-                  </div>
-                )}
-              </>
-            ) : (
-              <div className="placeholder-icon">
-                <i className="fas fa-image"></i>
+            <img
+              src={images[currentImageIndex]}
+              alt={sanitize(ad.titulo)}
+              loading="lazy"
+              onClick={() => setViewerOpen(true)}
+              style={{ cursor: 'zoom-in' }}
+            />
+            {images.length > 1 && (
+              <div className="gallery-nav">
+                <button onClick={() => changeImage(-1)} aria-label="Imagen anterior">
+                  <i className="fas fa-chevron-left"></i>
+                </button>
+                <button onClick={() => changeImage(1)} aria-label="Siguiente imagen">
+                  <i className="fas fa-chevron-right"></i>
+                </button>
               </div>
             )}
           </div>

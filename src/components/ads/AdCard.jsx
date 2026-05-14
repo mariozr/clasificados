@@ -34,18 +34,12 @@ function AdCard({ ad, onOpenDetail, onEdit, onDelete }) {
       <div className="card__image-container">
         <span className="card__badge">{ad.categorias?.nombre}</span>
         <div className="card__image">
-          {ad.imagen ? (
-            <img
-              src={ad.imagen}
-              alt={sanitize(ad.titulo)}
-              loading="lazy"
-              decoding="async"
-            />
-          ) : (
-            <div className="placeholder-icon">
-              <i className={`fas ${ad.categorias?.icono || 'fa-tag'}`}></i>
-            </div>
-          )}
+          <img
+            src={ad.imagen || '/default-ad.png'}
+            alt={sanitize(ad.titulo)}
+            loading="lazy"
+            decoding="async"
+          />
         </div>
       </div>
       <div className="card__content">
