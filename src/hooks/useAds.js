@@ -111,7 +111,8 @@ export function useAds() {
       return true
     } catch (e) {
       console.error('Error deleting ad:', e)
-      alert('Error al eliminar la publicación')
+      const errorMessage = e?.message || e?.error_description || JSON.stringify(e)
+      alert(`Error al eliminar la publicación: ${errorMessage}`)
       return false
     }
   }, [])

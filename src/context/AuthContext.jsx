@@ -66,9 +66,18 @@ export function AuthProvider({ children }) {
     return user.user_metadata?.full_name || user.email.split('@')[0]
   }, [user])
 
+  const isSuperUser = Boolean(
+    user?.email && (
+      import.meta.env.VITE_ADMIN_EMAIL === user.email ||
+      import.meta.env.VITE_ADMIN_EMAILS?.split(',').includes(user.email) ||
+      user.email === 'admin@clasificados.com' // Fallback for testing
+    )
+  )
+
   const value = {
     user,
     loading,
+    isSuperUser,
     signInWithPassword,
     signUp,
     signInWithGoogle,

@@ -4,8 +4,10 @@ import { formatPrice } from '../../utils/formatters'
 import { sanitize } from '../../utils/sanitize'
 
 function AdCard({ ad, onOpenDetail, onEdit, onDelete }) {
-  const { user } = useAuth()
+  const { user, isSuperUser } = useAuth()
   const isOwner = user && ad.user_id === user.id
+  const canEdit = isOwner
+  const canDelete = isOwner || isSuperUser
 
   const handleClick = useCallback(() => {
     onOpenDetail(ad.id)
@@ -62,24 +64,28 @@ function AdCard({ ad, onOpenDetail, onEdit, onDelete }) {
           >
             <i className="fab fa-whatsapp"></i> WhatsApp
           </a>
-          {isOwner && (
+          {(canEdit || canDelete) && (
             <>
-              <button
-                onClick={handleEdit}
-                className="btn-edit"
-                title="Editar"
-                aria-label="Editar anuncio"
-              >
-                <i className="fas fa-edit"></i>
-              </button>
-              <button
-                onClick={handleDelete}
-                className="btn-delete"
-                title="Eliminar"
-                aria-label="Eliminar anuncio"
-              >
-                <i className="fas fa-trash-alt"></i>
-              </button>
+              {canEdit && (
+                <button
+                  onClick={handleEdit}
+                  className="btn-edit"
+                  title="Editar"
+                  aria-label="Editar anuncio"
+                >
+                  <i className="fas fa-edit"></i>
+                </button>
+              )}
+              {canDelete && (
+                <button
+                  onClick={handleDelete}
+                  className="btn-delete"
+                  title="Eliminar"
+                  aria-label="Eliminar anuncio"
+                >
+                  <i className="fas fa-trash-alt"></i>
+                </button>
+              )}
             </>
           )}
         </div>
