@@ -154,6 +154,9 @@ function Header({ onSearch, onShowAuth, onShowCategories, onExplore, onShowMyAds
                   <a href="#" className="dropdown-item" onClick={handleMyAds}>
                     <i className="fas fa-layer-group"></i> Mis publicaciones
                   </a>
+                  <Link to="/mis-preguntas" className="dropdown-item" onClick={closeMenu}>
+                    <i className="fas fa-comments"></i> Mis preguntas
+                  </Link>
                 </div>
               </div>
             )}
