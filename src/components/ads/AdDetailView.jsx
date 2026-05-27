@@ -3,6 +3,7 @@ import CommentSection from './CommentSection'
 import ImageViewer from '../ui/ImageViewer'
 import { formatPrice, formatDate } from '../../utils/formatters'
 import { sanitize } from '../../utils/sanitize'
+import { getCategoryImage } from '../../utils/categoryImages'
 
 export default function AdDetailView({ ad, onRequestAuth }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
@@ -13,7 +14,7 @@ export default function AdDetailView({ ad, onRequestAuth }) {
   const images = useMemo(() => {
     if (!ad) return []
     const imgs = ad.imagenes || (ad.imagen ? [ad.imagen] : [])
-    return imgs.length > 0 ? imgs : ['/default-ad.png']
+    return imgs.length > 0 ? imgs : [getCategoryImage(ad.categorias?.nombre, ad.categorias?.icono)]
   }, [ad])
 
   const changeImage = useCallback((step) => {

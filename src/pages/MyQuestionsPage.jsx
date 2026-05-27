@@ -8,6 +8,7 @@ import AuthModal from '../components/auth/AuthModal'
 import LoadingSpinner from '../components/ui/LoadingSpinner'
 import { formatPrice } from '../utils/formatters'
 import { sanitize } from '../utils/sanitize'
+import { getCategoryImage } from '../utils/categoryImages'
 
 export default function MyQuestionsPage() {
   const navigate = useNavigate()
@@ -200,7 +201,7 @@ export default function MyQuestionsPage() {
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
                       <img 
-                        src={ad.imagen || '/default-ad.png'} 
+                        src={ad.imagen || getCategoryImage(ad.categorias?.nombre, ad.categorias?.icono)} 
                         alt={ad.titulo}
                         style={{
                           width: '60px',

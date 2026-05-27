@@ -2,6 +2,7 @@ import { memo, useCallback } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { formatPrice } from '../../utils/formatters'
 import { sanitize } from '../../utils/sanitize'
+import { getCategoryImage } from '../../utils/categoryImages'
 
 function AdCard({ ad, onOpenDetail, onEdit, onDelete }) {
   const { user, isSuperUser } = useAuth()
@@ -35,7 +36,7 @@ function AdCard({ ad, onOpenDetail, onEdit, onDelete }) {
         <span className="card__badge">{ad.categorias?.nombre}</span>
         <div className="card__image">
           <img
-            src={ad.imagen || '/default-ad.png'}
+            src={ad.imagen || getCategoryImage(ad.categorias?.nombre, ad.categorias?.icono)}
             alt={sanitize(ad.titulo)}
             loading="lazy"
             decoding="async"
