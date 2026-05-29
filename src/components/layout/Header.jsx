@@ -148,9 +148,9 @@ function Header({ onSearch, onShowAuth, onShowCategories, onExplore, onShowMyAds
                   Mi cuenta <i className="fas fa-chevron-down"></i>
                 </a>
                 <div className="dropdown-menu">
-                  <a href="#" className="dropdown-item" onClick={(e) => { e.preventDefault(); alert('Próximamente: Podrás editar tus datos de perfil aquí.') }}>
+                  <Link to="/mis-datos" className="dropdown-item" onClick={closeMenu}>
                     <i className="fas fa-user-circle"></i> Mis datos
-                  </a>
+                  </Link>
                   <a href="#" className="dropdown-item" onClick={handleMyAds}>
                     <i className="fas fa-layer-group"></i> Mis publicaciones
                   </a>
