@@ -241,6 +241,8 @@ h1, h2, h3, h4 { letter-spacing: -0.02em; line-height: 1.2; }
 .modal__header h3 { font-size: 1.25rem; font-weight: 700; color: var(--primary); }
 .modal__close { background: none; border: none; font-size: 2rem; line-height: 1; color: var(--text-light); cursor: pointer; transition: var(--transition); }
 .modal__close:hover { color: var(--primary); transform: rotate(90deg); }
+.modal__icon { display: flex; justify-content: center; padding: 1.5rem; padding-bottom: 0; }
+.modal__icon i { font-size: 5rem; color: var(--text-primary); opacity: 0.5; }
 
 /* Forms */
 .publish-form { padding: 2rem; }

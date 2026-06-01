@@ -1,67 +1,79 @@
-import { useState, useCallback } from 'react'
-import { useAuth } from '../../context/AuthContext'
-import Modal from '../ui/Modal'
+import { useState, useCallback } from "react";
+import { useAuth } from "../../context/AuthContext";
+import Modal from "../ui/Modal";
 
-export default function AuthModal({ isOpen, onClose, initialMode = 'login' }) {
-  const { signInWithPassword, signUp, signInWithGoogle, signInWithFacebook } = useAuth()
-  const [mode, setMode] = useState(initialMode)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [submitting, setSubmitting] = useState(false)
+export default function AuthModal({ isOpen, onClose, initialMode = "login" }) {
+  const { signInWithPassword, signUp, signInWithGoogle, signInWithFacebook } =
+    useAuth();
+  const [mode, setMode] = useState(initialMode);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = useCallback(async (e) => {
-    e.preventDefault()
-    setSubmitting(true)
-    try {
-      if (mode === 'login') {
-        await signInWithPassword(email, password)
-        onClose()
-      } else {
-        const data = await signUp(email, password)
-        if (data?.user && !data?.session) {
-          alert('Registro exitoso. Por favor, revisa tu correo electrónico para confirmar tu cuenta y poder iniciar sesión.')
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      setSubmitting(true);
+      try {
+        if (mode === "login") {
+          await signInWithPassword(email, password);
+          onClose();
         } else {
-          alert('Registro exitoso. Ya puedes iniciar sesión.')
+          const data = await signUp(email, password);
+          if (data?.user && !data?.session) {
+            alert(
+              "Registro exitoso. Por favor, revisa tu correo electrónico para confirmar tu cuenta y poder iniciar sesión.",
+            );
+          } else {
+            alert("Registro exitoso. Ya puedes iniciar sesión.");
+          }
+          onClose();
         }
-        onClose()
+        setEmail("");
+        setPassword("");
+      } catch (error) {
+        alert(error.message);
+      } finally {
+        setSubmitting(false);
       }
-      setEmail('')
-      setPassword('')
-    } catch (error) {
-      alert(error.message)
-    } finally {
-      setSubmitting(false)
-    }
-  }, [mode, email, password, signInWithPassword, signUp, onClose])
+    },
+    [mode, email, password, signInWithPassword, signUp, onClose],
+  );
 
   const handleGoogleLogin = useCallback(async () => {
     try {
-      await signInWithGoogle()
+      await signInWithGoogle();
     } catch (error) {
-      alert('Error: ' + error.message)
+      alert("Error: " + error.message);
     }
-  }, [signInWithGoogle])
+  }, [signInWithGoogle]);
 
   const handleFacebookLogin = useCallback(async () => {
     try {
-      await signInWithFacebook()
+      await signInWithFacebook();
     } catch (error) {
-      alert('Error: ' + error.message)
+      alert("Error: " + error.message);
     }
-  }, [signInWithFacebook])
+  }, [signInWithFacebook]);
 
   const toggleMode = useCallback((e) => {
-    e.preventDefault()
-    setMode((prev) => (prev === 'login' ? 'register' : 'login'))
-  }, [])
+    e.preventDefault();
+    setMode((prev) => (prev === "login" ? "register" : "login"));
+  }, []);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} maxWidth="400px">
       <div className="modal__header">
-        <h3>{mode === 'login' ? 'Iniciar Sesión' : 'Registrarse'}</h3>
+        <h3 style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <i className="fas fa-lock"></i>
+          {mode === "login" ? "Iniciar Sesión" : "Registrarse"}
+        </h3>
         <button className="modal__close" onClick={onClose}>
           &times;
         </button>
+      </div>
+      <div className="modal__icon">
+        <i className="fas fa-user-circle"></i>
       </div>
       <form className="publish-form" onSubmit={handleSubmit}>
         <div className="form-group">
@@ -85,11 +97,17 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }) {
             placeholder="••••••••"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
+            autoComplete={
+              mode === "login" ? "current-password" : "new-password"
+            }
           />
         </div>
         <button type="submit" className="btn-submit" disabled={submitting}>
-          {submitting ? 'Procesando...' : mode === 'login' ? 'Entrar' : 'Registrarse'}
+          {submitting
+            ? "Procesando..."
+            : mode === "login"
+              ? "Entrar"
+              : "Registrarse"}
         </button>
 
         <div className="auth-separator">
@@ -97,7 +115,11 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }) {
         </div>
 
         <div className="auth-social-grid">
-          <button type="button" className="btn-social btn-google" onClick={handleGoogleLogin}>
+          <button
+            type="button"
+            className="btn-social btn-google"
+            onClick={handleGoogleLogin}
+          >
             <img
               src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
               alt="Google"
@@ -105,30 +127,34 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }) {
             Google
           </button>
 
-          <button type="button" className="btn-social btn-facebook" onClick={handleFacebookLogin}>
+          {/*           <button
+            type="button"
+            className="btn-social btn-facebook"
+            onClick={handleFacebookLogin}
+          >
             <i className="fab fa-facebook"></i>
             Facebook
-          </button>
+          </button> */}
         </div>
 
         <p
           style={{
-            textAlign: 'center',
-            marginTop: '1.5rem',
-            fontSize: '0.85rem',
-            color: 'var(--text-muted)',
+            textAlign: "center",
+            marginTop: "1.5rem",
+            fontSize: "0.85rem",
+            color: "var(--text-muted)",
           }}
         >
-          {mode === 'login' ? '¿No tienes cuenta? ' : '¿Ya tienes cuenta? '}
+          {mode === "login" ? "¿No tienes cuenta? " : "¿Ya tienes cuenta? "}
           <a
             href="#"
             onClick={toggleMode}
-            style={{ color: 'var(--primary)', fontWeight: 700 }}
+            style={{ color: "var(--primary)", fontWeight: 700 }}
           >
-            {mode === 'login' ? 'Regístrate' : 'Inicia Sesión'}
+            {mode === "login" ? "Regístrate" : "Inicia Sesión"}
           </a>
         </p>
       </form>
     </Modal>
-  )
+  );
 }
